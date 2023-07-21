@@ -5,7 +5,7 @@ MY_EMAIL =              #Add your email address (make a new one if needed)
 MY_PASSWORD =           #Add your password. You can make one for general use, at least on gmail.
 CLIENT =                #Add email address of recipient
 MY_LATITUDE = 40.629269 #Change long and lat for different cities.
-MY_LONGITUDE = 22.947412
+MY_LONGITUDE = 22.947412 #Change long and lat for different cities.
 URL = "https://api.open-meteo.com/v1/" \
       f"forecast?latitude={MY_LATITUDE}&longitude={MY_LONGITUDE}&daily=weathercode,temperature_2m_max&timezone=Europe%2FBerlin"
 
