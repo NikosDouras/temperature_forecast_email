@@ -1,3 +1,4 @@
+# app.py
 from flask import Flask, request, redirect, render_template
 
 app = Flask(__name__)
@@ -21,5 +22,5 @@ def thank_you():
     return render_template('thank_you.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
