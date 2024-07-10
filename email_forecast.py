@@ -1,29 +1,45 @@
-import requests
+import os, requests
 import smtplib
+from datetime import datetime
+import schedule
+import time
 
-MY_EMAIL =              #Add your email address (make a new one if needed)
-MY_PASSWORD =           #Add your password. You can make one for general use, at least on gmail.
-CLIENT =                #Add email address of recipient
-MY_LATITUDE = 40.629269 #Change long and lat for different cities.
-MY_LONGITUDE = 22.947412 #Change long and lat for different cities.
-URL = "https://api.open-meteo.com/v1/" \
-      f"forecast?latitude={MY_LATITUDE}&longitude={MY_LONGITUDE}&daily=weathercode,temperature_2m_max&timezone=Europe%2FBerlin"
+MY_EMAIL = os.getenv('GMAIL')    # Replace with your email address
+MY_PASSWORD = os.getenv('GMAIL_PASSWORD')          # Replace with your password
+MY_LATITUDE = 40.6401
+MY_LONGITUDE = 22.9444
+URL = f"https://api.open-meteo.com/v1/forecast?latitude={MY_LATITUDE}&longitude={MY_LONGITUDE}&daily=weathercode,temperature_2m_max&timezone=Europe%2FBerlin"
+EMAIL_LIST_FILE = 'email_list.txt'
 
 def getting_temp():
     temporary = requests.get(url=URL)
     data = temporary.json()
     temp_today = data["daily"]["temperature_2m_max"][0]
-
     return temp_today
 
+def get_email_list(filename):
+    with open(filename, 'r') as file:
+        emails = file.read().splitlines()
+    return emails
 
-def sending_email():
-    with smtplib.SMTP("smtp.gmail.com") as connection:
-        connection.starttls()
-        connection.login(MY_EMAIL, MY_PASSWORD)
-        temp = getting_temp()
-        connection.sendmail(MY_EMAIL, CLIENT, msg=f"Subject:today's temperature {temp}C \n\nThe highest temperature"
-                                                  f" today is going to be {temp}C. Enjoy your day.")
+def send_daily_email():
+    temp = getting_temp()
+    clients = get_email_list(EMAIL_LIST_FILE)
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+            connection.starttls()
+            connection.login(MY_EMAIL, MY_PASSWORD)
+            for client in clients:
+                message = f"Subject: Today's temperature {temp}C\n\nThe highest temperature today is going to be {temp}C. Enjoy your day."
+                connection.sendmail(MY_EMAIL, client, message)
+        print(f"Emails sent successfully at {datetime.now()}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
-sending_email()
+schedule.every().day.at("17:39").do(send_daily_email)
+
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
