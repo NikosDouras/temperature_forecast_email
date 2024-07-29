@@ -14,7 +14,7 @@ def subscribe():
     email = request.form['email']
     if email:
         with open(EMAIL_LIST_FILE, 'a') as file:
-            file.write('\n' + email)
+            file.write(email + '\n')
     return redirect('/thank_you')
 
 @app.route('/thank_you')

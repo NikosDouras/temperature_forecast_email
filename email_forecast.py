@@ -38,7 +38,7 @@ def send_daily_email():
         print(f"An error occurred: {e}")
 
 
-schedule.every().day.at("17:39").do(send_daily_email)
+schedule.every().day.at("11:19").do(send_daily_email)
 
 
 while True:
