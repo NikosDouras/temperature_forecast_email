@@ -4,6 +4,9 @@ import smtplib
 from datetime import datetime
 import schedule
 import time
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 MY_EMAIL = os.getenv('GMAIL')    # Replace with your email address
 MY_PASSWORD = os.getenv('GMAIL_PASSWORD')          # Replace with your password
@@ -11,7 +14,6 @@ MY_LATITUDE = 40.6401
 MY_LONGITUDE = 22.9444
 URL = f"https://api.open-meteo.com/v1/forecast?latitude={MY_LATITUDE}&longitude={MY_LONGITUDE}&daily=weathercode,temperature_2m_max&timezone=Europe%2FBerlin"
 EMAIL_LIST_FILE = 'email_list.txt'
-
 def getting_temp():
     temporary = requests.get(url=URL)
     data = temporary.json()
@@ -38,7 +40,7 @@ def send_daily_email():
         print(f"An error occurred: {e}")
 
 
-schedule.every().day.at("11:19").do(send_daily_email)
+schedule.every().day.at("14:29").do(send_daily_email)
 
 
 while True:
