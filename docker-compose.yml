@@ -3,7 +3,7 @@ services:
   app:
     build: .
     env_file:
-      - .env
+      - projectFiles/.env
     ports:
       - "5000:5000"
     restart: always
@@ -11,6 +11,6 @@ services:
   email_forecast:
     build: .
     env_file:
-      - .env
+      - projectFiles/.env
     restart: always
     command: python email_forecast.py
