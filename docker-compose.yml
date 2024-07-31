@@ -6,11 +6,20 @@ services:
       - projectFiles/.env
     ports:
       - "5000:5000"
+    volumes:
+      - shared_data:/app/projectFiles
     restart: always
     command: python app.py
+
   email_forecast:
     build: .
     env_file:
       - projectFiles/.env
+    volumes:
+      - shared_data:/app/projectFiles
     restart: always
     command: python email_forecast.py
+
+volumes:
+  shared_data:
+
