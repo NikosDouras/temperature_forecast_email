@@ -53,15 +53,15 @@ def send_daily_email():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-while True:
-    print("Waiting 1 minute")
-    time.sleep(30)
-    print("Sending Emails")
-    send_daily_email()
-# Schedule the task
-# schedule.every().day.at("14:29").do(send_daily_email)
-# send_daily_email()
-
 # while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+#     print("Waiting 1 minute")
+#     time.sleep(30)
+#     print("Sending Emails")
+#     send_daily_email()
+# Schedule the task
+schedule.every().day.at("14:29").do(send_daily_email)
+send_daily_email()
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
